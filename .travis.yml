@@ -1,14 +1,17 @@
 language: go
 go:
-  - 1.8
+  - 1.8.1
+env:
+  - GOPATH: $HOME/$TRAVIS_REPO_SLUG
+  - PATH: $PATH:$GOPATH/bin
+  - DOCUMENT_ENV: test
+  - GO15VENDOREXPERIMENT: 1
 
 install:
-  - go get golang.org/x/tools/cmd/cover
-  - go get -u github.com/golang/dep/...
-  - sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
-  - sudo apt-get install glide
+  - go get -u github.com/Masterminds/glide
 
 script:
+  - ls -a
+  - pwd
   - cd src/document && glide install
-  - cd src/document && goose up
   - cd src/document && go build main.go

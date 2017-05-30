@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/YasushiKobayashi/go-api.svg?style=svg)](https://circleci.com/gh/YasushiKobayashi/go-api)
+[![Build Status](https://travis-ci.org/YasushiKobayashi/go-api.svg?branch=master)](https://travis-ci.org/YasushiKobayashi/go-api)
 
 ### front repo
 https://github.com/YasushiKobayashi/react-cms
