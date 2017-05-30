@@ -1,0 +1,31 @@
+machine:
+  timezone:
+    Asia/Tokyo
+  services:
+    - mysql
+  environment:
+    GOPATH: $HOME/$CIRCLE_PROJECT_REPONAME
+    PATH: $PATH:$GOPATH/bin
+    DOCUMENT_ENV: test
+    GO15VENDOREXPERIMENT: 1
+
+dependencies:
+  pre:
+    - go version
+    # - bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+    # - source ~/.gvm/scripts/gvm
+    # - gvm list
+    # - gvm install go1.8.1
+
+database:
+  override:
+    - 'mysql -u ubuntu -e "CREATE DATABASE IF NOT EXISTS circle_default DEFAULT CHARSET utf8"'
+    - 'mysql -u ubuntu -e "CREATE DATABASE IF NOT EXISTS circle_test DEFAULT CHARSET utf8"'
+
+test:
+  override:
+    - go get -u github.com/Masterminds/glide
+    - cd src/document/config && mv sample.tml config.tml
+    - cd src/document && glide install
+    - cd src/document && go build main.go
+    - cd src/document && ./main &
