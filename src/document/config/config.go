@@ -21,9 +21,6 @@ const DB_OPTIONS_INTERFACE = "ENGINE=InnoDB"
 
 var DB_URL = conf.DB_USER + ":@" + conf.DB_PASS + "/" + conf.DB_DATABASE + "?charset=utf8&parseTime=true&loc=Local"
 
-// HASH_SALT
-const HASH_SALT = "bc9765d90f8afa361a6ad379ee74396a40a6ebf7b95908f4ba2e71b39aa7537f"
-
 // JWT
 var JWT_EXP = time.Now().Add(time.Hour * 168).Unix()
 

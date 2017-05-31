@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -63,6 +64,12 @@ func Register() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
+		strName := "username " + param.Name
+		strEmal := "emal " + param.Email.String
+		str := "が登録しました。"
+		array := []string{strName, strEmal, str}
+		toSlack := strings.Join(array, "\n")
+		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusCreated, data)
 	}
 }
@@ -134,7 +141,7 @@ func Upload() echo.HandlerFunc {
 
 		image := models.NewNullString(filePath)
 		param := models.User{
-			Id:      uint(claims.Id),
+			Id:      int(claims.Id),
 			Name:    userInfo.Name,
 			Image:   image,
 			Created: userInfo.Created,

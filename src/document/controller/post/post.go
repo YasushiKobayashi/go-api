@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -24,11 +25,13 @@ func Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		data := models.FindPost(int(id))
 		if data.Id == 0 {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
 		return c.JSON(http.StatusOK, data)
@@ -39,6 +42,7 @@ func Search() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		params := new(models.Search)
 		if err = c.Bind(params); err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
 		}
 
@@ -54,6 +58,7 @@ func GetFromCategory() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("category_id"))
 		if err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
@@ -91,8 +96,17 @@ func Create() echo.HandlerFunc {
 		}
 		data, err := models.CreatePost(post)
 		if err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
+
+		toSlack := config.SITE_TITLE + "新規ドキュメント"
+		toSlack, err = slackSendCont(toSlack, claims.Id, data)
+		if err != nil {
+			log.Printf("data : %v", "SLACKの通知エラー")
+			log.Printf("data : %v", err)
+		}
+		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusCreated, data)
 	}
 }
@@ -101,16 +115,19 @@ func Update() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		params := new(models.Post)
 		if err = c.Bind(params); err != nil {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
 		}
 
 		nowPost := models.FindPost(int(id))
 		if nowPost.Id == 0 {
+			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
 
@@ -118,7 +135,7 @@ func Update() echo.HandlerFunc {
 		claims := user.Claims.(*models.JwtCustomClaims)
 
 		post := models.Post{
-			Id:         uint(id),
+			Id:         int(id),
 			UserId:     claims.Id,
 			Title:      params.Title,
 			Content:    params.Content,
@@ -132,8 +149,31 @@ func Update() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
+
+		toSlack := config.SITE_TITLE + "ドキュメントの更新"
+		toSlack, err = slackSendCont(toSlack, claims.Id, data)
+		if err != nil {
+			log.Printf("data : %v", "SLACKの通知エラー")
+			log.Printf("data : %v", err)
+		}
+		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusOK, data)
 	}
+}
+
+func slackSendCont(str string, id int, param models.Post) (res string, err error) {
+	user := models.FindUser(id)
+	if user.Id == 0 {
+		return res, err
+	}
+
+	ttlStr := param.Title
+	userStr := "_by " + user.Name + "_"
+	urlStr := "url " + config.FRONT_URL + "article/" + strconv.Itoa(param.Id)
+	contStr := handler.TrimStr(param.Content, 40)
+	array := []string{str, ttlStr, userStr, urlStr, contStr}
+	res = strings.Join(array, "\n")
+	return res, err
 }
 
 func Upload() echo.HandlerFunc {

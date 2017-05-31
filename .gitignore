@@ -30,4 +30,5 @@ node_modules
 
 vendor
 src/document/config/config.tml
+src/document/config/env.go
 src/document/main

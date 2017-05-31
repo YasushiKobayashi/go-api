@@ -1,5 +1,5 @@
 hash: 79e13607030ec92d03760e9594a4a9e5544143bbc7ae316d866a90f9832ee599
-updated: 2017-05-29T23:55:57.090874847+09:00
+updated: 2017-05-31T22:44:38.087037567+09:00
 imports:
 - name: github.com/alecthomas/gometalinter
   version: bae2f1293d092fd8167939d5108d1b025eaef9de
@@ -61,6 +61,10 @@ imports:
   - acme/autocert
   - pbkdf2
   - scrypt
+- name: golang.org/x/exp
+  version: 239d448f23a0d683c1ab7225da01af038355f5e9
+  subpackages:
+  - utf8string
 - name: golang.org/x/sys
   version: 9ccfe848b9db8435a24c424abbc07a921adf1df5
   subpackages:

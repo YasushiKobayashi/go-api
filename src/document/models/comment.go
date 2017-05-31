@@ -10,7 +10,7 @@ import (
 
 type (
 	Comment struct {
-		Id      uint      `json:"id"`
+		Id      int       `json:"id"`
 		UserId  int       `json:"user_id" gorm:"not null" validate:"required"`
 		User    UserJson  `json:"user"`
 		PostId  int       `json:"post_id" gorm:"not null"`

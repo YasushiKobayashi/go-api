@@ -12,7 +12,7 @@ import (
 
 type (
 	User struct {
-		Id       uint       `db:"id" json:"id"`
+		Id       int        `db:"id" json:"id"`
 		Name     string     `db:"name" json:"name" gorm:"not null" validate:"required"`
 		Fbid     NullString `db:"fbid" json:"fbid"`
 		Email    NullString `db:"email" json:"email" gorm:"unique_index" validate:"email"`
@@ -23,7 +23,7 @@ type (
 	}
 
 	UserJson struct {
-		Id      uint      `json:"id"`
+		Id      int       `json:"id"`
 		Name    string    `json:"name"`
 		Email   *string   `json:"email"`
 		Image   *string   `json:"image"`
@@ -82,7 +82,7 @@ func Login(param User) (res Token, err error) {
 	return res, err
 }
 
-func createToken(id uint) (res string, err error) {
+func createToken(id int) (res string, err error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["id"] = id

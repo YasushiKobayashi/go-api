@@ -10,7 +10,7 @@ import (
 
 type (
 	Post struct {
-		Id         uint       `json:"id"`
+		Id         int        `json:"id"`
 		Title      string     `json:"title" gorm:"not null" validate:"required"`
 		Content    string     `json:"content" gorm:"not null;type:TEXT" validate:"required"`
 		WpFlg      bool       `json:"wp_flg" gorm:"not null"`

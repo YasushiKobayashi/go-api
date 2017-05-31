@@ -1,9 +1,10 @@
 language: go
 go:
   - 1.8.1
+
 env:
-  - GOPATH: $HOME/$TRAVIS_REPO_SLUG
-  - PATH: $PATH:$GOPATH/bin
+  # - GOPATH: "$HOME/$TRAVIS_REPO_SLUG"
+  - PATH: "$PATH:$GOPATH/bin"
   - DOCUMENT_ENV: test
   - GO15VENDOREXPERIMENT: 1
 
@@ -11,7 +12,10 @@ install:
   - go get -u github.com/Masterminds/glide
 
 script:
-  - ls -a
-  - pwd
   - cd src/document && glide install
   - cd src/document && go build main.go
+  - cd src/document && ./main &
+
+notifications:
+  slack:
+    secure: wlS6TxjGccCVirKKglHpktx2RaLmhCBP52y9+vzGRLWntgEhv4rbiTymt1NlGBRColRZQogyKHpaf7luQfAfj04c8YgSLkJfwFLB03Z6e0wWLyunIacstULfVpZr9Km4dQLjDnvoTVOxGpUQ4c6h3PxlUOAKQPoQbBsDBfUD2Q0RghOj3l4yLO18VB8gY66at6mZE+WojkCIOZ3EPD2YmJYAdgFRwbpbbTCGIkGrKiAQVxhAPOAUpie3LO53oUFHocklnnMHBgLQ9SNc7bjclQZcF5GuA/W3GZMX9QUV1qt+UsUsbsuy+I6VWlCFybF8JPSOlaPmA3KlLP08xtozIy/PqjUDsqcEASijkG5b2U0q2SD1YIjDhmzJOL/EyYthzDaTcI6Gz92x8O6qxTVuJtSCE8wR6dmYeNF8aPS0SU9WCEcEQpU+qbQUxF4833pf01OzrRlWqVPZ9JYoYvSGZ4jCdCxjkxB1BInCPSu6146a/AS2STjL9uB88Zif3BNg0r9Y5Vfw3gZ9Gs/TCZ9xfxLUnLD22/rj6ddmIcyCGbkLtfQiXQRxDzkz4V8pQuNE7QDWP4yD67UzlgCv98A/S5PtjNFYp9w6BfNJz9MhMyAFYISFcTuY3kxsYTQzXMcvOedxpAISNntHTBvZ+T2M+TIxwnF70EnJxobXfcVTCRI=

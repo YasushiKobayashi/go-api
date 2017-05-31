@@ -9,14 +9,14 @@ import (
 
 type (
 	Category struct {
-		Id    uint   `json:"id"`
+		Id    int    `json:"id"`
 		Name  string `json:"name"`
 		Slug  string `json:"slug"`
 		Posts []Post `json:"posts" gorm:"many2many:post_category;"`
 	}
 
 	CategoryJson struct {
-		Id      uint      `json:"id"`
+		Id      int       `json:"id"`
 		Name    string    `json:"name" validate:"required"`
 		Slug    string    `json:"slug" validate:"required"`
 		Created time.Time `json:"created" sql:"DEFAULT:current_timestamp"`

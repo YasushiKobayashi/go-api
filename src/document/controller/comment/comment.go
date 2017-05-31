@@ -2,10 +2,12 @@ package comment
 
 import (
 	"document/config"
+	"document/handler"
 	"document/models"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -33,6 +35,14 @@ func Create() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
+
+		toSlack := config.SITE_TITLE + "ドキュメントの更新"
+		toSlack, err = slackSendCont(toSlack, data)
+		if err != nil {
+			log.Printf("data : %v", "SLACKの通知エラー")
+			log.Printf("data : %v", err)
+		}
+		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusCreated, data)
 	}
 }
@@ -61,7 +71,7 @@ func Update() echo.HandlerFunc {
 		}
 
 		post := models.Comment{
-			Id:      uint(id),
+			Id:      int(id),
 			UserId:  claims.Id,
 			PostId:  comment.PostId,
 			Content: params.Content,
@@ -73,6 +83,28 @@ func Update() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
+
+		toSlack := config.SITE_TITLE + "ドキュメントの更新"
+		toSlack, err = slackSendCont(toSlack, data)
+		if err != nil {
+			log.Printf("data : %v", "SLACKの通知エラー")
+			log.Printf("data : %v", err)
+		}
+		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusOK, data)
 	}
+}
+
+func slackSendCont(str string, param models.Comment) (res string, err error) {
+	user := models.FindUser(param.UserId)
+	if user.Id == 0 {
+		return res, err
+	}
+
+	userStr := "_by " + user.Name + "_"
+	urlStr := "url " + config.FRONT_URL + "article/" + strconv.Itoa(param.PostId)
+	contStr := handler.TrimStr(param.Content, 40)
+	array := []string{str, userStr, urlStr, contStr}
+	res = strings.Join(array, "\n")
+	return res, err
 }
