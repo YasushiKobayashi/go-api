@@ -19,7 +19,7 @@ const DB_TYPE = "mysql"
 const DB_OPTIONS_STRING = "gorm:table_options"
 const DB_OPTIONS_INTERFACE = "ENGINE=InnoDB"
 
-var DB_URL = conf.DB_USER + ":@" + conf.DB_PASS + "/" + conf.DB_DATABASE + "?charset=utf8&parseTime=true&loc=Local"
+var DB_URL = conf.DB_USER + ":" + conf.DB_PASS + "@tcp(" + conf.DB_HOST + ":3306)/" + conf.DB_DATABASE + "?charset=utf8&parseTime=true&loc=Local"
 
 // JWT
 var JWT_EXP = time.Now().Add(time.Hour * 168).Unix()
