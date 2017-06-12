@@ -44,7 +44,7 @@ func FindAllPost() []Post {
 func FindPost(id int) Post {
 	db := DB()
 	post := Post{}
-	db.Order("created desc").First(&post, id).Related(&post.User, "User").Related(&post.Categories, "Categories").Related(&post.Comments)
+	db.First(&post, id).Related(&post.User, "User").Related(&post.Categories, "Categories").Order("created asc").Related(&post.Comments)
 	for i, _ := range post.Comments {
 		db.Model(post.Comments[i]).Related(&post.Comments[i].User, "User")
 	}
@@ -54,7 +54,7 @@ func FindPost(id int) Post {
 func SearchPost(param Search) []Post {
 	db := DB()
 	posts := []Post{}
-	db.Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
+	db.Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
 	for i, _ := range posts {
 		db.Model(posts[i]).Related(&posts[i].User, "User").Related(&posts[i].Comments, "Comments")
 	}
@@ -64,7 +64,7 @@ func SearchPost(param Search) []Post {
 func UsersPost(id int) []Post {
 	db := DB()
 	posts := []Post{}
-	db.Where(Post{UserId: id}).Find(&posts)
+	db.Order("created desc").Where(Post{UserId: id}).Find(&posts)
 	for i, _ := range posts {
 		db.Model(posts[i]).Related(&posts[i].User, "User").Related(&posts[i].Comments, "Comments")
 	}

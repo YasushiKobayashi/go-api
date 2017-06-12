@@ -38,7 +38,7 @@ func FindAllCategory() []Category {
 func FindAllPostFromCategory(id int) Category {
 	db := DB()
 	category := Category{}
-	db.First(&category, id).Related(&category.Posts, "Posts")
+	db.First(&category, id).Order("created desc").Related(&category.Posts, "Posts")
 	return category
 }
 

@@ -48,6 +48,7 @@ func SaveComment(params Comment) (res Comment, err error) {
 
 	db := DB()
 	if err := db.Save(&params).Error; err != nil {
+		log.Printf("data : %v", err)
 		return res, err
 	}
 	return params, err

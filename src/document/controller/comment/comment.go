@@ -64,6 +64,7 @@ func Update() echo.HandlerFunc {
 
 		user := c.Get("user").(*jwt.Token)
 		claims := user.Claims.(*models.JwtCustomClaims)
+		log.Printf("data : %v", claims)
 
 		comment := models.FindComment(int(id))
 		if comment.UserId != claims.Id {
