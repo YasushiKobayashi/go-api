@@ -3,7 +3,7 @@ go:
   - 1.8.1
 
 env:
-  # - GOPATH: "$HOME/$TRAVIS_REPO_SLUG"
+  - GOPATH: "$HOME/$TRAVIS_REPO_SLUG"
   - PATH: "$PATH:$GOPATH/bin"
   - DOCUMENT_ENV: test
   - GO15VENDOREXPERIMENT: 1

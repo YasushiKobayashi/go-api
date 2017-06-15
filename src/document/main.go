@@ -20,6 +20,10 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Static("/static", "static")
 	e.Use(middleware.CORS())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{config.ALLOW_ORIGINS},
+		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+	}))
 
 	e.POST("/v1/register", user.Register())
 	e.POST("/v1/login", user.Login())
