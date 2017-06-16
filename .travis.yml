@@ -1,20 +1,15 @@
-language: go
-go:
-  - 1.8.1
+sudo: required
+services:
+  - docker
 
-env:
-  - GOPATH: "$HOME/$TRAVIS_REPO_SLUG"
-  - PATH: "$PATH:$GOPATH/bin"
-  - DOCUMENT_ENV: test
-  - GO15VENDOREXPERIMENT: 1
-
-install:
-  - go get -u github.com/Masterminds/glide
+before_script:
+  - echo 'Canada/Pacific' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+  - docker pull golang:1.8
 
 script:
-  - cd src/document && glide install
-  - cd src/document && go build main.go
-  - cd src/document && ./main &
+  - docker build -t go-api ./
+  - docker run --name go-api -d -p 5000:5000 go-api
 
 notifications:
   slack:

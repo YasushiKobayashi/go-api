@@ -5,6 +5,7 @@ import (
 	"document/handler"
 	"document/models"
 	"encoding/hex"
+
 	"log"
 	"net/http"
 	"strings"
@@ -114,7 +115,29 @@ func Get() echo.HandlerFunc {
 
 func Put() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.JSON(http.StatusBadRequest, config.BadRequest)
+		params := new(models.User)
+
+		user := c.Get("user").(*jwt.Token)
+		claims := user.Claims.(*models.JwtCustomClaims)
+
+		userInfo := models.FindUser(claims.Id)
+		if userInfo.Id == 0 {
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+		param := models.User{
+			Id:       int(claims.Id),
+			Name:     params.Name,
+			Email:    params.Email,
+			Password: params.Password,
+			Created:  userInfo.Created,
+			Updated:  time.Now(),
+		}
+		data, err := models.SaveUser(param)
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+		return c.JSON(http.StatusCreated, data)
 	}
 }
 

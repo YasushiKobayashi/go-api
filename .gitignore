@@ -29,6 +29,7 @@ build/Release
 .npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
+pkg
 vendor
 src/document/config/config.tml
 src/document/config/env.go

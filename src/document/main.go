@@ -8,6 +8,7 @@ import (
 	"document/controller/user"
 	"document/models"
 	"log"
+	"os"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -19,10 +20,17 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Static("/static", "static")
-	e.Use(middleware.CORS())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{config.ALLOW_ORIGINS},
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+	}))
+
+	fp, err := os.OpenFile("log/echo.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: fp,
 	}))
 
 	e.POST("/v1/register", user.Register())
