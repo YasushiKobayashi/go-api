@@ -27,7 +27,6 @@ test:
   override:
     - go get -u github.com/Masterminds/glide
     - cd src/document/config && mv sample.tml config.tml
-    - cd src/document/config && mv env.sample env.go
     - cd src/document && glide install
     - cd src/document && go build main.go
     - cd src/document && ./main &

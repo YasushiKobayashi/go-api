@@ -8,8 +8,9 @@ before_script:
   - docker pull golang:1.8
 
 script:
+  - cd src/document/config && mv sample.tml config.tml
   - docker build -t go-api ./
-  - docker run --name go-api -d -p 5000:5000 go-api
+  - docker run --name go-api-app -d -p 5000:5000 go-api
 
 notifications:
   slack:

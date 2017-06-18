@@ -3,18 +3,49 @@ DB_DATABASE = "document"
 DB_HOST = "localhost"
 DB_PASS = ""
 DB_USER = "root"
-URL = "api.com"
+
+URL = "api.document.com"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "document.com"
 
 [develop]
 DB_DATABASE = "document"
 DB_HOST = "localhost"
 DB_PASS = ""
 DB_USER = "root"
+
 URL = "localhost:5000"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "localhost:7000"
 
 [test]
 DB_DATABASE = "circle_default"
 DB_HOST = "localhost"
 DB_USER = "ubuntu"
 DB_PASS = ""
+
+
 URL = "localhost:5000"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "localhost:7000"
