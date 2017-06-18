@@ -9,7 +9,7 @@ before_script:
 
 script:
   - cd src/document/config && mv sample.tml config.tml
-  - docker build -t .
+  - docker build .
 
 notifications:
   slack:
