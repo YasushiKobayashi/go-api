@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"app/config"
 	"bytes"
-	"document/config"
 	"encoding/json"
 	"net/http"
 

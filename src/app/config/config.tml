@@ -1,0 +1,53 @@
+[production]
+DB_DATABASE = "document"
+DB_HOST = "blog-wordpress.csoewzf5kon5.ap-northeast-1.rds.amazonaws.com"
+DB_PASS = "H80UuP3Gs87057w86"
+DB_USER = "root"
+
+HOST = "0.0.0.0"
+URL = "api.admin.attela.jp"
+SITE_TITLE = "ATTELA DOC"
+HASH_SALT = "9f07e96b3041ca81461a2c333c3a0427089a17d80cbb9ed859b9972e36b7a22b"
+
+SLACK_WEBHOOKURL = "https://hooks.slack.com/services/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"
+SLACK_FACEICON = "http://api.admin.attela.jp/static/img/image.jpg"
+SLACK_CNANNEL = "engineermtg"
+SLACK_USERNAME = "document"
+
+FRONT_DOMEIN = "admin.attela.jp"
+
+[develop]
+DB_DATABASE = "document"
+DB_HOST = "127.0.0.1"
+DB_PASS = ""
+DB_USER = "root"
+
+HOST = "localhost"
+URL = "localhost:5000"
+SITE_TITLE = "ATTELA DOC"
+HASH_SALT = "9f07e96b3041ca81461a2c333c3a0427089a17d80cbb9ed859b9972e36b7a22b"
+
+SLACK_WEBHOOKURL = "https://hooks.slack.com/services/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"
+SLACK_FACEICON = "https://i0.wp.com/japan.wordcamp.org/files/2011/02/chara_wp_mark.png"
+SLACK_CNANNEL = "deploy"
+SLACK_USERNAME = "document"
+
+FRONT_DOMEIN = "localhost:3000"
+
+[test]
+DB_DATABASE = "circle_default"
+DB_HOST = "localhost"
+DB_USER = "ubuntu"
+DB_PASS = ""
+
+HOST = "localhost"
+URL = "localhost:5000"
+SITE_TITLE = "DOC"
+
+HASH_SALT = ""
+SLACK_WEBHOOKURL = "https://hooks.slack.com/services/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"
+SLACK_FACEICON = "https://i0.wp.com/japan.wordcamp.org/files/2011/02/chara_wp_mark.png"
+SLACK_CNANNEL = "deploy"
+SLACK_USERNAME = "document"
+
+FRONT_DOMEIN = "localhost:7000"

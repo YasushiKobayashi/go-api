@@ -1,9 +1,9 @@
 package user
 
 import (
-	"document/config"
-	"document/handler"
-	"document/models"
+	"app/config"
+	"app/handler"
+	"app/models"
 	"encoding/hex"
 	"log"
 	"net/http"

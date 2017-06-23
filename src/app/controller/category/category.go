@@ -1,8 +1,8 @@
 package category
 
 import (
-	"document/config"
-	"document/models"
+	"app/config"
+	"app/models"
 	"net/http"
 
 	"github.com/labstack/echo"

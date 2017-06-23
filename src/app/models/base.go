@@ -1,8 +1,8 @@
 package models
 
 import (
+	"app/config"
 	"database/sql"
-	"document/config"
 	"encoding/json"
 
 	"github.com/jinzhu/gorm"
