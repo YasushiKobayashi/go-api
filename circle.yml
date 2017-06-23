@@ -26,7 +26,7 @@ database:
 test:
   override:
     - go get -u github.com/Masterminds/glide
-    - cd src/document/config && mv sample.tml config.tml
-    - cd src/document && glide install
-    - cd src/document && go build main.go
-    - cd src/document && ./main &
+    - cd src/app/config && mv sample.tml config.tml
+    - cd src/app && glide install
+    - cd src/app && go build main.go
+    - cd src/app && ./main &

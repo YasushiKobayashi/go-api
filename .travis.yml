@@ -19,7 +19,7 @@ before_script:
   - docker pull golang:1.8
 
 script:
-  - mv src/document/config/sample.tml src/document/config/config.tml
+  - mv src/app/config/sample.tml src/app/config/config.tml
   - docker-compose up --build -d
 
 notifications:
