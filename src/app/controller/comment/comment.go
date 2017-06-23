@@ -1,9 +1,9 @@
 package comment
 
 import (
-	"document/config"
-	"document/handler"
-	"document/models"
+	"app/config"
+	"app/handler"
+	"app/models"
 	"log"
 	"net/http"
 	"strconv"

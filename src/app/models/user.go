@@ -1,7 +1,7 @@
 package models
 
 import (
-	"document/config"
+	"app/config"
 	"log"
 	"time"
 

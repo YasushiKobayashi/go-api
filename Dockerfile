@@ -3,13 +3,13 @@ MAINTAINER Yasushi kobayashi <ptpadan@gmail.com>
 
 RUN curl https://glide.sh/get | sh
 
-COPY ./src/document /go/src/document
+COPY ./src/app /go/src/app
 
-WORKDIR /go/src/document
+WORKDIR /go/src/app
 RUN glide install && \
   go build main.go
-
-CMD ./main &
-
 EXPOSE 5000
-VOLUME /go/src/document/log
+VOLUME /go/src/app/log
+VOLUME /go/src/app/static
+
+# CMD /go/src/app/main &

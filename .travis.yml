@@ -2,14 +2,25 @@ sudo: required
 services:
   - docker
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.8.0
+
 before_script:
-  - echo 'Canada/Pacific' | sudo tee /etc/timezone
-  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+  - sudo apt-get update
+  - sudo apt-get -y -q -o Dpkg::Options::="--force-confnew" install docker-engine
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose up -d mysql_test
+  - docker-compose run workspace composer install
+  - cp .env.example .env
+  - docker-compose run workspace php artisan key:generate
   - docker pull golang:1.8
 
 script:
   - mv src/document/config/sample.tml src/document/config/config.tml
-  - docker build .
+  - docker-compose up --build -d
 
 notifications:
   slack:

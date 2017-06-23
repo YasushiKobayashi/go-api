@@ -1,0 +1,9 @@
+app:
+  build: .
+  ports:
+    - "5000:5000"
+  tty: true
+  volumes:
+    - "./src/app/log:/go/src/app/log"
+    - "./src/app/static:/go/src/app/static"
+  command: /go/src/app/main &

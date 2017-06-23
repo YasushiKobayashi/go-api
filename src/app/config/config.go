@@ -7,11 +7,13 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+var conf = main()
+
 // server config
 const PORT = "5000"
-const HOST = "localhost:"
 
-var conf = main()
+var HOST = conf.HOST + ":"
+
 var URL = conf.URL
 var SITE_TITLE = conf.SITE_TITLE
 var HASH_SALT = conf.HASH_SALT
@@ -46,6 +48,7 @@ type (
 		DB_HOST          string `toml:"DB_HOST"`
 		DB_USER          string `toml:"DB_USER"`
 		DB_PASS          string `toml:"DB_PASS"`
+		HOST             string `toml:"HOST"`
 		URL              string `toml:"URL"`
 		SITE_TITLE       string `toml:"SITE_TITLE"`
 		HASH_SALT        string `toml:"HASH_SALT"`

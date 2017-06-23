@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"document/config"
+	"app/config"
 	"io"
 	"mime/multipart"
 	"os"

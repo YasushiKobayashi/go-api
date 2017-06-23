@@ -1,12 +1,12 @@
 package main
 
 import (
-	"document/config"
-	"document/controller/category"
-	"document/controller/comment"
-	"document/controller/post"
-	"document/controller/user"
-	"document/models"
+	"app/config"
+	"app/controller/category"
+	"app/controller/comment"
+	"app/controller/post"
+	"app/controller/user"
+	"app/models"
 	"log"
 	"os"
 
