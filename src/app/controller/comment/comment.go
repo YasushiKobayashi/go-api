@@ -56,7 +56,6 @@ func Update() echo.HandlerFunc {
 		}
 
 		params := new(models.Comment)
-		log.Printf("data : %v", params)
 		if err = c.Bind(params); err != nil {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
@@ -64,7 +63,6 @@ func Update() echo.HandlerFunc {
 
 		user := c.Get("user").(*jwt.Token)
 		claims := user.Claims.(*models.JwtCustomClaims)
-		log.Printf("data : %v", claims)
 
 		comment := models.FindComment(int(id))
 		if comment.UserId != claims.Id {
@@ -73,7 +71,7 @@ func Update() echo.HandlerFunc {
 
 		post := models.Comment{
 			Id:      int(id),
-			UserId:  claims.Id,
+			UserId:  comment.Id,
 			PostId:  comment.PostId,
 			Content: params.Content,
 			Created: comment.Created,
@@ -92,7 +90,7 @@ func Update() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 		}
 		handler.SendSlack(toSlack)
-		return c.JSON(http.StatusOK, data)
+		return c.JSON(http.StatusCreated, data)
 	}
 }
 
