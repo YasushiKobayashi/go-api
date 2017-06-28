@@ -31,6 +31,6 @@ node_modules
 
 pkg
 vendor
-src/document/config/config.tml
-src/document/config/env.go
-src/document/main
+src/app/config/config.tml
+src/app/config/env.go
+src/app/main

@@ -5,6 +5,7 @@ import (
 	"app/handler"
 	"app/models"
 	"encoding/hex"
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -26,52 +27,64 @@ func toHashFromScrypt(password string) string {
 
 func Register() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
-		param := new(models.User)
-		if err = c.Bind(param); err != nil {
+		posts := new(models.User)
+		if err = c.Bind(posts); err != nil {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
 
 		validate := validator.New()
-		if err := validate.Struct(param); err != nil {
+		if err := validate.Struct(posts); err != nil {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
 
-		password := param.Password
-		if !password.Valid || !param.Email.Valid {
-			log.Printf("data : %v", "password and email are required.")
-			return c.JSON(http.StatusBadRequest, config.BadRequest)
-		} else if utf8.RuneCountInString(password.String) < 8 {
-			log.Printf("data : %v", "password is short.")
-			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		save := models.User{
+			Id:       posts.Id,
+			Name:     posts.Name,
+			Email:    models.NewNullString(posts.Email.String),
+			Password: models.NewNullString(posts.Password.String),
 		}
 
-		if password.Valid {
-			password.String = toHashFromScrypt(password.String)
-		}
-
-		user := models.User{
-			Id:       param.Id,
-			Name:     param.Name,
-			Fbid:     param.Fbid,
-			Email:    param.Email,
-			Password: password,
-		}
-
-		data, err := models.CreateUser(user)
+		save, err = validation(save)
 		if err != nil {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
-		strName := "username " + param.Name
-		strEmal := "emal " + param.Email.String
+
+		data, err := models.CreateUser(save)
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+		strName := "username " + posts.Name
+		strEmal := "emal " + posts.Email.String
 		str := "が登録しました。"
 		array := []string{strName, strEmal, str}
 		toSlack := strings.Join(array, "\n")
 		handler.SendSlack(toSlack)
 		return c.JSON(http.StatusCreated, data)
 	}
+}
+
+func validation(posts models.User) (res models.User, err error) {
+	res = posts
+	validate := validator.New()
+	if err = validate.Struct(res); err != nil {
+		return res, err
+	}
+
+	password := res.Password
+	if !password.Valid || !res.Email.Valid {
+		err = errors.New("password and email are required.")
+		return res, err
+	} else if utf8.RuneCountInString(password.String) < 8 {
+		err = errors.New("password is short.")
+		return res, err
+	}
+
+	res.Password.String = toHashFromScrypt(password.String)
+	return res, err
 }
 
 func Login() echo.HandlerFunc {
@@ -99,22 +112,63 @@ func Login() echo.HandlerFunc {
 	}
 }
 
+func GetUserInfo(c echo.Context) (res models.UserJson, err error) {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*models.JwtCustomClaims)
+
+	res = models.FindUser(claims.Id)
+	if res.Id == 0 {
+		return res, err
+	}
+	return res, err
+}
+
 func Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		user := c.Get("user").(*jwt.Token)
-		claims := user.Claims.(*models.JwtCustomClaims)
-
-		data := models.FindUser(claims.Id)
-		if data.Id == 0 {
+		data, err := GetUserInfo(c)
+		if err != nil {
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
 		return c.JSON(http.StatusOK, data)
 	}
 }
 
-func Put() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		return c.JSON(http.StatusBadRequest, config.BadRequest)
+func Update() echo.HandlerFunc {
+	return func(c echo.Context) (err error) {
+		posts := new(models.User)
+		if err = c.Bind(posts); err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
+		}
+
+		user, err := GetUserInfo(c)
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+
+		save := models.User{
+			Id:       user.Id,
+			Name:     posts.Name,
+			Email:    models.NewNullString(posts.Email.String),
+			Password: models.NewNullString(posts.Password.String),
+			Image:    posts.Image,
+			Created:  user.Created,
+			Updated:  time.Now(),
+		}
+
+		save, err = validation(save)
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+
+		data, err := models.SaveUser(save)
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, config.BadRequest)
+		}
+		return c.JSON(http.StatusCreated, data)
 	}
 }
 
@@ -131,20 +185,18 @@ func Upload() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return err
 		}
-		user := c.Get("user").(*jwt.Token)
-		claims := user.Claims.(*models.JwtCustomClaims)
 
-		userInfo := models.FindUser(claims.Id)
-		if userInfo.Id == 0 {
+		user, err := GetUserInfo(c)
+		if err != nil {
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
 
 		image := models.NewNullString(filePath)
 		param := models.User{
-			Id:      int(claims.Id),
-			Name:    userInfo.Name,
+			Id:      user.Id,
+			Name:    user.Name,
 			Image:   image,
-			Created: userInfo.Created,
+			Created: user.Created,
 			Updated: time.Now(),
 		}
 		data, err := models.SaveUser(param)

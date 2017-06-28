@@ -43,7 +43,7 @@ func main() {
 	}
 	r.Use(middleware.JWTWithConfig(jwtconfig))
 	r.GET("user", user.Get())
-	r.PUT("user", user.Put())
+	r.PUT("user", user.Update())
 	r.POST("user/upload", user.Upload())
 
 	r.GET("post", post.List())

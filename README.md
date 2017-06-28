@@ -9,25 +9,23 @@ https://github.com/YasushiKobayashi/react-cms
 - mysql5.6
 
 ### set up golang
-```shell
+```bash
 # mac
 brew install go
 brew install glide
 brew install direnv
-
-# centos
-yum -y install golang
+echo 'eval "$(direnv hook bash)"' >> ~/.bash_profile
 ```
 
 ### setup project
-```shell
+```bash
 cd src/document
 glide install
 ```
 
 
 ### migrate
-```shell
+```bash
 cd src/document
 goose up
 ```
