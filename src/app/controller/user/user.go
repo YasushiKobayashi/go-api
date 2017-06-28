@@ -152,6 +152,7 @@ func Update() echo.HandlerFunc {
 			Name:     posts.Name,
 			Email:    models.NewNullString(posts.Email.String),
 			Password: models.NewNullString(posts.Password.String),
+			Image:    posts.Image,
 			Created:  user.Created,
 			Updated:  time.Now(),
 		}
