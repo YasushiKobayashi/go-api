@@ -34,7 +34,9 @@ var DB_URL = conf.DB_USER + ":" + conf.DB_PASS + "@tcp(" + conf.DB_HOST + ":3306
 // JWT
 var JWT_EXP = time.Now().Add(time.Hour * 168).Unix()
 
-const UPLOAD_DIR = "/static/img/"
+const UPLOAD_PATH = "/static/img/"
+var GOPATH = os.Getenv("GOPATH")
+var UPLOAD_DIR = GOPATH + "/src/app" + UPLOAD_PATH
 
 type (
 	ENV struct {

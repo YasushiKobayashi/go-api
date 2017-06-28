@@ -21,7 +21,7 @@ func Upload(file *multipart.FileHeader) (res string, err error) {
 	var fileName = strconv.FormatInt(time.Now().Unix(), 10) + file.Filename[pos:]
 
 	// Destination
-	dst, err := os.Create("." + config.UPLOAD_DIR + fileName)
+	dst, err := os.Create(config.UPLOAD_DIR + fileName)
 	if err != nil {
 		return res, err
 	}
@@ -29,6 +29,6 @@ func Upload(file *multipart.FileHeader) (res string, err error) {
 	if _, err = io.Copy(dst, src); err != nil {
 		return res, err
 	}
-	res = "//" + config.URL + config.UPLOAD_DIR + fileName
+	res = "//" + config.URL + config.UPLOAD_PATH + fileName
 	return res, err
 }
