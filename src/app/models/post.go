@@ -34,20 +34,14 @@ type (
 func FindAllPost() []Post {
 	db := DB()
 	posts := []Post{}
-	db.Order("created desc").Find(&posts)
-	for i, _ := range posts {
-		db.Model(posts[i]).Related(&posts[i].User, "User").Related(&posts[i].Comments, "Comments")
-	}
+	db.Preload("User").Preload("Comments.User").Preload("Categories").Order("created desc").Find(&posts)
 	return posts
 }
 
 func FindPost(id int) Post {
 	db := DB()
 	post := Post{}
-	db.First(&post, id).Related(&post.User, "User").Related(&post.Categories, "Categories").Order("created asc").Related(&post.Comments)
-	for i, _ := range post.Comments {
-		db.Model(post.Comments[i]).Related(&post.Comments[i].User, "User")
-	}
+	db.Preload("User").Preload("Comments.User").Preload("Categories").Find(&post, id)
 	return post
 }
 
