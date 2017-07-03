@@ -108,6 +108,10 @@ func Login() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusBadRequest, config.BadRequest)
 		}
+		if data.Token == "" {
+			log.Printf("data : %v", "error authorize")
+			return c.JSON(http.StatusUnauthorized, config.Unauthorized)
+		}
 		return c.JSON(http.StatusOK, data)
 	}
 }
