@@ -34,7 +34,7 @@ type (
 func FindAllPost() []Post {
 	db := DB()
 	posts := []Post{}
-	db.Preload("User").Preload("Comments.User").Preload("Categories").Order("created desc").Find(&posts)
+	db.Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
 	return posts
 }
 
@@ -48,20 +48,14 @@ func FindPost(id int) Post {
 func SearchPost(param Search) []Post {
 	db := DB()
 	posts := []Post{}
-	db.Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
-	for i, _ := range posts {
-		db.Model(posts[i]).Related(&posts[i].User, "User").Related(&posts[i].Comments, "Comments")
-	}
+	db.Preload("User").Preload("Comments.User").Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
 	return posts
 }
 
 func UsersPost(id int) []Post {
 	db := DB()
 	posts := []Post{}
-	db.Order("created desc").Where(Post{UserId: id}).Find(&posts)
-	for i, _ := range posts {
-		db.Model(posts[i]).Related(&posts[i].User, "User").Related(&posts[i].Comments, "Comments")
-	}
+	db.Preload("User").Preload("Comments.User").Order("created desc").Where(Post{UserId: id}).Find(&posts)
 	return posts
 }
 
