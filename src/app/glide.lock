@@ -1,8 +1,6 @@
-hash: 79e13607030ec92d03760e9594a4a9e5544143bbc7ae316d866a90f9832ee599
-updated: 2017-05-31T22:44:38.087037567+09:00
+hash: d4c7bab062aa192ee228a883f506452bfcaeac09b1b0a814564f0fa802a65ae9
+updated: 2017-07-04T23:33:49.092428122+09:00
 imports:
-- name: github.com/alecthomas/gometalinter
-  version: bae2f1293d092fd8167939d5108d1b025eaef9de
 - name: github.com/bndr/gotabulate
   version: bc555436bfd5d4e93a2dd35b462ce37e067afdda
 - name: github.com/BurntSushi/toml
@@ -26,7 +24,7 @@ imports:
 - name: github.com/kyokomi/gorm-explain
   version: f6ec771ffcbed7c1d9959ec6c09d1ea3bff442ec
 - name: github.com/labstack/echo
-  version: 1049c9613cd371b7ea8f219404c9a821734781ed
+  version: 935a60782cbbc55110e7bd4b33120e4567cbee43
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -42,18 +40,10 @@ imports:
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mattn/go-runewidth
   version: 97311d9f7767e3d6f422ea06661bc2c7a19e8a5d
-- name: github.com/nsf/gocode
-  version: 843b7a63f621bb441274849d58671870adf1a5ce
-- name: github.com/rogpeppe/godef
-  version: ee532b944160bb27b6f23e4f5ef38b8fdaa2a6bd
-- name: github.com/sqs/goreturns
-  version: d4c76c572c6d23139b51360fa2ebac04df6cea09
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
-- name: github.com/zmb3/gogetdoc
-  version: 79b1b4df48a0d93023941267827d44e6c814b8a3
 - name: golang.org/x/crypto
   version: 5a033cc77e57eca05bdb50522851d29e03569cbe
   subpackages:
@@ -69,15 +59,6 @@ imports:
   version: 9ccfe848b9db8435a24c424abbc07a921adf1df5
   subpackages:
   - unix
-- name: golang.org/x/tools
-  version: 9862c35773a14ca029b7da49c410111ba13830a0
-  subpackages:
-  - cmd/...
-  - cmd/goimports
-  - cmd/gorename
-  - cmd/guru
 - name: gopkg.in/go-playground/validator.v9
-  version: 6d8c18553ea1ac493d049edd6f102f52e618f085
-- name: gopkg.in/guregu/null.v3
-  version: 41961cea0328defc5f95c1c473f89ebf0d1813f6
+  version: fb68f39656d7ebf8aa339ad4917aa0c260ecc237
 testImports: []
