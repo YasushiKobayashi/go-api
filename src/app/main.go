@@ -25,7 +25,8 @@ func main() {
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 
-	fp, err := os.OpenFile("log/echo.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	logPath := config.PROJECT_PATH + "log/echo.log"
+	fp, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		panic(err)
 	}

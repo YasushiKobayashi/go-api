@@ -28,5 +28,6 @@ test:
     - go get -u github.com/Masterminds/glide
     - cd src/app/config && mv sample.tml config.tml
     - cd src/app && glide install
+      cd src/app && go test $(glide novendor)
     - cd src/app && go build main.go
     - cd src/app && ./main &

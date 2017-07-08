@@ -23,12 +23,5 @@ cd src/document
 glide install
 ```
 
-
-### migrate
-```bash
-cd src/document
-goose up
-```
-
 ### doucment
 `godoc -http=:6060`

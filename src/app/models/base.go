@@ -20,7 +20,8 @@ func DB() *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	file, err := os.OpenFile("log/gorm.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	logPath := config.PROJECT_PATH + "log/gorm.log"
+	file, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		panic(err)
 	}

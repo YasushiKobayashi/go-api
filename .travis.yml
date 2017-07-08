@@ -8,6 +8,7 @@ before_script:
   - docker pull golang:1.8
 
 script:
+  - cd src/app && go test $(glide novendor)
   - mv src/app/config/sample.tml src/app/config/config.tml
   - docker-compose up --build -d
 

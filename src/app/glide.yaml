@@ -13,8 +13,6 @@ import:
 - package: github.com/kyokomi/gorm-explain
 - package: github.com/labstack/echo
   version: ^3.2.1
-  subpackages:
-  - middleware
 - package: golang.org/x/crypto
   subpackages:
   - scrypt

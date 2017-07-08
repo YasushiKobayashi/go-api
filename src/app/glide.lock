@@ -1,5 +1,5 @@
-hash: d4c7bab062aa192ee228a883f506452bfcaeac09b1b0a814564f0fa802a65ae9
-updated: 2017-07-04T23:33:49.092428122+09:00
+hash: 5c81794bae28fa28553908cfe983b41567dfa47374673929741cb7eef6c0f654
+updated: 2017-07-09T00:57:02.166970629+09:00
 imports:
 - name: github.com/bndr/gotabulate
   version: bc555436bfd5d4e93a2dd35b462ce37e067afdda
@@ -25,15 +25,11 @@ imports:
   version: f6ec771ffcbed7c1d9959ec6c09d1ea3bff442ec
 - name: github.com/labstack/echo
   version: 935a60782cbbc55110e7bd4b33120e4567cbee43
-  subpackages:
-  - middleware
 - name: github.com/labstack/gommon
   version: 1121fd3e243c202482226a7afe4dcd07ffc4139a
   subpackages:
-  - bytes
   - color
   - log
-  - random
 - name: github.com/mattn/go-colorable
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
