@@ -10,7 +10,7 @@ func Test_ユーザー登録成功(t *testing.T) {
 	assert := assert.New(t)
 	save := models.User{
 		Name:     "hoge",
-		Email:    models.NewNullString("hoge@hogecom"),
+		Email:    models.NewNullString("hoge@hoge.com"),
 		Password: models.NewNullString("hogehoge"),
 	}
 	data, err := models.CreateUser(save)
@@ -24,8 +24,8 @@ func Test_ユーザー登録成功(t *testing.T) {
 func Test_ユーザーログイン成功(t *testing.T) {
 	assert := assert.New(t)
 	save := models.User{
-		Email:    "hoge@hogecom",
-		Password: "hogehoge",
+		Email:    models.NewNullString("hoge@hoge.com"),
+		Password: models.NewNullString("hogehoge"),
 	}
 	data, err := models.Login(save)
 	if err != nil {
