@@ -1,3 +1,4 @@
+// model base setting
 package models
 
 import (
@@ -12,6 +13,7 @@ import (
 	explain "github.com/kyokomi/gorm-explain"
 )
 
+// DB connect database. setting logging.
 func DB() *gorm.DB {
 	db, err := gorm.Open(config.DB_TYPE, config.DB_URL)
 	if err != nil {

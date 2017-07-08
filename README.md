@@ -29,3 +29,6 @@ glide install
 cd src/document
 goose up
 ```
+
+### doucment
+`godoc -http=:6060`
