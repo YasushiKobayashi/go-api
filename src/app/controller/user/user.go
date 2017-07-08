@@ -1,3 +1,4 @@
+// user controller
 package user
 
 import (
@@ -25,6 +26,10 @@ func toHashFromScrypt(password string) string {
 	return hex.EncodeToString(converted[:])
 }
 
+/*
+ Register.
+ regist user.
+*/
 func Register() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		posts := new(models.User)
@@ -87,6 +92,10 @@ func validation(posts models.User) (res models.User, err error) {
 	return res, err
 }
 
+/*
+Login method.
+    retun jwt token
+*/
 func Login() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		param := new(models.User)
@@ -116,6 +125,10 @@ func Login() echo.HandlerFunc {
 	}
 }
 
+/*
+GetUserInfo
+		return users info from jwt token
+*/
 func GetUserInfo(c echo.Context) (res models.UserJson, err error) {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*models.JwtCustomClaims)
@@ -127,6 +140,10 @@ func GetUserInfo(c echo.Context) (res models.UserJson, err error) {
 	return res, err
 }
 
+/*
+GET
+get user info
+*/
 func Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		data, err := GetUserInfo(c)
@@ -137,6 +154,11 @@ func Get() echo.HandlerFunc {
 	}
 }
 
+/*
+Update
+		@method put
+		update user info
+*/
 func Update() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		posts := new(models.User)
