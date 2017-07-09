@@ -13,8 +13,6 @@ import:
 - package: github.com/kyokomi/gorm-explain
 - package: github.com/labstack/echo
   version: ^3.2.1
-  subpackages:
-  - middleware
 - package: golang.org/x/crypto
   subpackages:
   - scrypt
@@ -23,3 +21,5 @@ import:
   - utf8string
 - package: gopkg.in/go-playground/validator.v9
   version: ^9.4.0
+- package: github.com/stretchr/testify
+  version: ^1.1.4

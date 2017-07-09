@@ -29,6 +29,6 @@ func Upload(file *multipart.FileHeader) (res string, err error) {
 	if _, err = io.Copy(dst, src); err != nil {
 		return res, err
 	}
-	res = "//" + config.URL + config.UPLOAD_PATH + fileName
+	res = "//" + config.URL + "/" + config.UPLOAD_PATH + fileName
 	return res, err
 }

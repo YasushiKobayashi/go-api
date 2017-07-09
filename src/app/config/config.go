@@ -34,9 +34,11 @@ var DB_URL = conf.DB_USER + ":" + conf.DB_PASS + "@tcp(" + conf.DB_HOST + ":3306
 // JWT
 var JWT_EXP = time.Now().Add(time.Hour * 168).Unix()
 
-const UPLOAD_PATH = "/static/img/"
+const UPLOAD_PATH = "static/img/"
+
 var GOPATH = os.Getenv("GOPATH")
-var UPLOAD_DIR = GOPATH + "/src/app" + UPLOAD_PATH
+var PROJECT_PATH = GOPATH + "/src/app/"
+var UPLOAD_DIR = PROJECT_PATH + UPLOAD_PATH
 
 type (
 	ENV struct {
@@ -64,7 +66,9 @@ type (
 
 func main() Config {
 	env := ENV{}
-	_, err := toml.DecodeFile("config/config.tml", &env)
+	confPath := PROJECT_PATH + "config/config.tml"
+	_, err := toml.DecodeFile(confPath, &env)
+
 	if err != nil {
 		panic(err)
 	}
