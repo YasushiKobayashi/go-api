@@ -30,10 +30,20 @@ type (
 	}
 )
 
-func FindAllPost() []Post {
+func FindAllPost(number int) []Post {
+	db := DB()
 	posts := []Post{}
-	db.Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
+	db.Limit(20).Offset(number).Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
 	return posts
+}
+
+func CountPost() Count {
+	db := DB()
+	var count int
+	db.Model(&Post{}).Count(&count)
+	var res Count
+	res.Count = count
+	return res
 }
 
 func FindPost(id int) Post {

@@ -44,6 +44,10 @@ type (
 	NullString struct {
 		sql.NullString
 	}
+
+	Count struct {
+		Count int `json:"count"`
+	}
 )
 
 func (s *NullString) MarshalJSON() ([]byte, error) {
