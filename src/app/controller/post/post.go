@@ -16,12 +16,17 @@ import (
 
 func List() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		number, err := strconv.Atoi(c.Param("number"))
-		var data []models.Post
-		if err != nil {
-			data = models.FindAllPost(0)
-		} else {
-			data = models.FindAllPost((int(number) - 1) * 20)
+		pages := c.QueryParam("pages")
+		if pages == "" {
+			pages = "1"
+		}
+
+		var number int
+		number, _ = strconv.Atoi(pages)
+		data := models.FindAllPost((int(number) - 1) * 20)
+
+		if size := len(data); size == 0 {
+			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
 		return c.JSON(http.StatusOK, data)
 	}

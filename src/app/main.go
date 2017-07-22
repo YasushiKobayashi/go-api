@@ -48,7 +48,6 @@ func main() {
 	r.POST("user/upload", user.Upload())
 
 	r.GET("post", post.List())
-	r.GET("post/page/:number", post.List())
 	r.POST("post", post.Create())
 	r.GET("post/:id", post.Get())
 	r.PUT("post/:id", post.Update())
