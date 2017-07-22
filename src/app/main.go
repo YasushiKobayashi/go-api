@@ -21,7 +21,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Static("/static", "static")
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{config.ALLOW_ORIGINS},
+		AllowOrigins: config.CORS_DOMEIN,
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 

@@ -1,5 +1,5 @@
 hash: b9afbcc383da0d1ecafab7d961d766e24782fa45739e26a4d63584ddbcaeb73b
-updated: 2017-07-11T00:43:31.177820608+09:00
+updated: 2017-07-22T16:16:25.488446819+09:00
 imports:
 - name: github.com/bndr/gotabulate
   version: bc555436bfd5d4e93a2dd35b462ce37e067afdda
