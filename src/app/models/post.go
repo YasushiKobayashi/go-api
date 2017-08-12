@@ -30,7 +30,8 @@ func SearchPost(pages int, search string) []Post {
 	db := DB()
 	posts := []Post{}
 	db.Limit(20).Offset(pages).Preload("User").Preload("Comments").
-		Where("content LIKE ?", "%"+search+"%").Or("title LIKE ?", "%"+search+"%").
+		Where("content LIKE ?", "%"+search+"%").
+		Or("title LIKE ?", "%"+search+"%").
 		Order("created desc").Find(&posts)
 	return posts
 }

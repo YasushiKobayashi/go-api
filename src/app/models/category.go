@@ -8,10 +8,12 @@ import (
 
 type (
 	Category struct {
-		Id    int    `json:"id"`
-		Name  string `json:"name"`
-		Slug  string `json:"slug"`
-		Posts []Post `json:"posts" gorm:"many2many:post_category;"`
+		Id      int       `json:"id"`
+		Name    string    `json:"name"`
+		Slug    string    `json:"slug"`
+		Posts   []Post    `json:"posts" gorm:"many2many:post_category;"`
+		Created time.Time `json:"created" sql:"DEFAULT:current_timestamp"`
+		Updated time.Time `json:"updated" sql:"DEFAULT:current_timestamp"`
 	}
 
 	CategoryJson struct {
@@ -33,9 +35,17 @@ func FindAllCategory() []Category {
 	return category
 }
 
-func FindAllPostFromCategory(id int) Category {
+func FindAllPostFromCategory(id int, pages int, search string) Category {
+	db := DB()
 	category := Category{}
-	db.First(&category, id).Order("created desc").Preload("User").Preload("Comments.User").Related(&category.Posts, "Posts")
+
+	db.First(&category, id).
+		Preload("User").Preload("Comments").
+		Order("created desc").
+		Limit(20).Offset(pages).
+		Where("content LIKE ?", "%"+search+"%").
+		Or("title LIKE ?", "%"+search+"%").
+		Related(&category.Posts, "Posts")
 	return category
 }
 

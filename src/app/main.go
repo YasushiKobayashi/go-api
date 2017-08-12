@@ -53,14 +53,14 @@ func main() {
 	r.PUT("post/:id", post.Update())
 	r.GET("post/count", post.Count())
 	r.GET("post/user", post.GetFromUser())
-	r.GET("post/category/:category_id", post.GetFromCategory())
 	r.POST("post/upload", post.Upload())
 
 	r.POST("comment", comment.Create())
 	r.PUT("comment/:id", comment.Update())
 
-	r.GET("category", category.List())
-	r.POST("category", category.Create())
+	r.POST("categories", category.Create())
+	r.GET("categories", category.List())
+	r.GET("categories/:category_id/posts", category.GetWithPostList())
 
 	log.Fatal(e.Start(config.HOST + config.PORT))
 }

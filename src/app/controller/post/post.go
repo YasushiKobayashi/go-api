@@ -16,8 +16,8 @@ import (
 
 func List() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		pages := c.QueryParam("pages")
 		query := c.QueryParam("q")
+		pages := c.QueryParam("pages")
 		if pages == "" {
 			pages = "1"
 		}
@@ -55,19 +55,6 @@ func Get() echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
 		return c.JSON(http.StatusOK, data)
-	}
-}
-
-func GetFromCategory() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("category_id"))
-		if err != nil {
-			log.Printf("data : %v", err)
-			return c.JSON(http.StatusBadRequest, err.Error())
-		}
-
-		data := models.FindAllPostFromCategory(int(id))
-		return c.JSON(http.StatusOK, data.Posts)
 	}
 }
 
