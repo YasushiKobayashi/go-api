@@ -21,26 +21,26 @@ type (
 		Updated    time.Time  `json:"updated" sql:"DEFAULT:current_timestamp"`
 	}
 
-	Search struct {
-		Word string `json:"word" validate:"required"`
-	}
-
 	Upload struct {
 		Path string `json:"path"`
 	}
 )
 
-func FindAllPost(number int) []Post {
+func SearchPost(pages int, search string) []Post {
 	db := DB()
 	posts := []Post{}
-	db.Limit(20).Offset(number).Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
+	db.Limit(20).Offset(pages).Preload("User").Preload("Comments").
+		Where("content LIKE ?", "%"+search+"%").Or("title LIKE ?", "%"+search+"%").
+		Order("created desc").Find(&posts)
 	return posts
 }
 
-func CountPost() Count {
+func CountPost(search string) Count {
 	db := DB()
 	var count int
-	db.Model(&Post{}).Count(&count)
+	db.Model(&Post{}).
+		Where("content LIKE ?", "%"+search+"%").Or("title LIKE ?", "%"+search+"%").
+		Count(&count)
 	var res Count
 	res.Count = count
 	return res

@@ -52,7 +52,6 @@ func main() {
 	r.GET("post/:id", post.Get())
 	r.PUT("post/:id", post.Update())
 	r.GET("post/count", post.Count())
-	r.POST("post/search", post.Search())
 	r.GET("post/user", post.GetFromUser())
 	r.GET("post/category/:category_id", post.GetFromCategory())
 	r.POST("post/upload", post.Upload())

@@ -17,13 +17,14 @@ import (
 func List() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pages := c.QueryParam("pages")
+		query := c.QueryParam("q")
 		if pages == "" {
 			pages = "1"
 		}
 
 		var number int
 		number, _ = strconv.Atoi(pages)
-		data := models.FindAllPost((int(number) - 1) * 20)
+		data := models.SearchPost((int(number)-1)*20, query)
 
 		if size := len(data); size == 0 {
 			return c.JSON(http.StatusNotFound, config.NotFound)
@@ -34,7 +35,8 @@ func List() echo.HandlerFunc {
 
 func Count() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		data := models.CountPost()
+		query := c.QueryParam("q")
+		data := models.CountPost(query)
 		return c.JSON(http.StatusOK, data)
 	}
 }
@@ -52,22 +54,6 @@ func Get() echo.HandlerFunc {
 			log.Printf("data : %v", err)
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
-		return c.JSON(http.StatusOK, data)
-	}
-}
-
-func Search() echo.HandlerFunc {
-	return func(c echo.Context) (err error) {
-		params := new(models.Search)
-		if err = c.Bind(params); err != nil {
-			log.Printf("data : %v", err)
-			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
-		}
-
-		search := models.Search{
-			Word: params.Word,
-		}
-		data := models.SearchPost(search)
 		return c.JSON(http.StatusOK, data)
 	}
 }
