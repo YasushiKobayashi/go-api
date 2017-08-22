@@ -3,8 +3,6 @@ package models
 import (
 	"log"
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type (
@@ -27,7 +25,6 @@ type (
 )
 
 func SearchPost(pages int, search string) []Post {
-	db := DB()
 	posts := []Post{}
 	db.Limit(20).Offset(pages).Preload("User").Preload("Comments").
 		Where("content LIKE ?", "%"+search+"%").
@@ -36,13 +33,11 @@ func SearchPost(pages int, search string) []Post {
 	return posts
 }
 
-func CountPost(search string) Count {
-	db := DB()
+func CountPost(search string) (res Count) {
 	var count int
 	db.Model(&Post{}).
 		Where("content LIKE ?", "%"+search+"%").Or("title LIKE ?", "%"+search+"%").
 		Count(&count)
-	var res Count
 	res.Count = count
 	return res
 }

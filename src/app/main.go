@@ -61,6 +61,7 @@ func main() {
 	r.POST("categories", category.Create())
 	r.GET("categories", category.List())
 	r.GET("categories/:category_id/posts", category.GetWithPostList())
+	r.GET("categories/:category_id/count-posts", category.CountPost())
 
 	log.Fatal(e.Start(config.HOST + config.PORT))
 }

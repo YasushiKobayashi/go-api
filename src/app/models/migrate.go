@@ -1,9 +1,5 @@
 package models
 
-import (
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
 func init() {
 	db := DB()
 	db.AutoMigrate(&User{})

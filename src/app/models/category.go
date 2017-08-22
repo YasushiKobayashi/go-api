@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type (
@@ -23,6 +21,11 @@ type (
 		Created time.Time `json:"created" sql:"DEFAULT:current_timestamp"`
 		Updated time.Time `json:"updated" sql:"DEFAULT:current_timestamp"`
 	}
+
+	PostCategory struct {
+		PostID     int `gorm:"column:post_id"`
+		CategoryID int `gorm:"column:category_id"`
+	}
 )
 
 func (CategoryJson) TableName() string {
@@ -35,18 +38,15 @@ func FindAllCategory() []Category {
 	return category
 }
 
-func FindAllPostFromCategory(id int, pages int, search string) Category {
-	db := DB()
-	category := Category{}
-
-	db.First(&category, id).
+func FindAllPostFromCategory(id int, pages int, search string) (res Category) {
+	db.First(&res, id).
 		Preload("User").Preload("Comments").
 		Order("created desc").
 		Limit(20).Offset(pages).
 		Where("content LIKE ?", "%"+search+"%").
 		Or("title LIKE ?", "%"+search+"%").
-		Related(&category.Posts, "Posts")
-	return category
+		Related(&res.Posts, "Posts")
+	return res
 }
 
 func CreateCategory(params CategoryJson) (res CategoryJson, err error) {
@@ -58,4 +58,13 @@ func CreateCategory(params CategoryJson) (res CategoryJson, err error) {
 		return res, err
 	}
 	return params, err
+}
+
+func CountPostFromCategory(id int) (res Count) {
+	var count int
+	db.Model(&PostCategory{}).
+		Where("category_id = ?", id).
+		Count(&count)
+	res.Count = count
+	return res
 }

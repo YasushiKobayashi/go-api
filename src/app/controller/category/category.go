@@ -57,3 +57,16 @@ func GetWithPostList() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, data)
 	}
 }
+
+func CountPost() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("category_id"))
+		if err != nil {
+			log.Printf("data : %v", err)
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		rst := models.CountPostFromCategory(id)
+		return c.JSON(http.StatusOK, rst)
+	}
+}
