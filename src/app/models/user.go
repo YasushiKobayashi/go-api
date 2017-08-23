@@ -22,12 +22,12 @@ type (
 	}
 
 	UserJson struct {
-		Id      int       `json:"id"`
-		Name    string    `json:"name"`
-		Email   *string   `json:"email"`
-		Image   *string   `json:"image"`
-		Created time.Time `json:"created"`
-		Updated time.Time `json:"updated"`
+		Id      int        `json:"id"`
+		Name    string     `json:"name"`
+		Email   NullString `db:"email" json:"email" gorm:"unique_index" validate:"email"`
+		Image   NullString `db:"image" json:"image"`
+		Created time.Time  `json:"created"`
+		Updated time.Time  `json:"updated"`
 	}
 
 	JwtCustomClaims struct {

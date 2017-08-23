@@ -50,7 +50,7 @@ type (
 	}
 )
 
-func (s *NullString) MarshalJSON() ([]byte, error) {
+func (s NullString) MarshalJSON() ([]byte, error) {
 	if s.Valid {
 		return json.Marshal(s.String)
 	} else {
