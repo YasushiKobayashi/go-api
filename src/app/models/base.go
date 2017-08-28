@@ -13,6 +13,9 @@ import (
 	explain "github.com/kyokomi/gorm-explain"
 )
 
+var db *gorm.DB = DB()
+var validate = validator.New()
+
 // DB connect database. setting logging.
 func DB() *gorm.DB {
 	db, err := gorm.Open(config.DB_TYPE, config.DB_URL)

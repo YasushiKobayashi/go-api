@@ -4,7 +4,6 @@ import (
 	"time"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type (
@@ -29,26 +28,22 @@ func (CategoryJson) TableName() string {
 }
 
 func FindAllCategory() []Category {
-	db := DB()
 	category := []Category{}
 	db.Find(&category)
 	return category
 }
 
 func FindAllPostFromCategory(id int) Category {
-	db := DB()
 	category := Category{}
 	db.First(&category, id).Order("created desc").Preload("User").Preload("Comments.User").Related(&category.Posts, "Posts")
 	return category
 }
 
 func CreateCategory(params CategoryJson) (res CategoryJson, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Create(&params).Error; err != nil {
 		return res, err
 	}
