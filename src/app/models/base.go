@@ -11,7 +11,11 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	explain "github.com/kyokomi/gorm-explain"
+	validator "gopkg.in/go-playground/validator.v9"
 )
+
+var db *gorm.DB = DB()
+var validate = validator.New()
 
 // DB connect database. setting logging.
 func DB() *gorm.DB {

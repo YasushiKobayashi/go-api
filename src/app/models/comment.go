@@ -5,7 +5,6 @@ import (
 	"time"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type (
@@ -21,13 +20,11 @@ type (
 )
 
 func CreateComment(params Comment) (res Comment, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		log.Printf("data : %v", err)
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Create(&params).Error; err != nil {
 		log.Printf("data : %v", err)
 		return res, err
@@ -40,13 +37,11 @@ func CreateComment(params Comment) (res Comment, err error) {
 }
 
 func SaveComment(params Comment) (res Comment, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		log.Printf("data : %v", err)
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Save(&params).Error; err != nil {
 		log.Printf("data : %v", err)
 		return res, err
@@ -55,7 +50,6 @@ func SaveComment(params Comment) (res Comment, err error) {
 }
 
 func FindComment(id int) Comment {
-	db := DB()
 	comment := Comment{}
 	db.First(&comment, id)
 	return comment

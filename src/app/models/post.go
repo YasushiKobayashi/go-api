@@ -5,7 +5,6 @@ import (
 	"time"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type (
@@ -32,41 +31,35 @@ type (
 )
 
 func FindAllPost() []Post {
-	db := DB()
 	posts := []Post{}
 	db.Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
 	return posts
 }
 
 func FindPost(id int) Post {
-	db := DB()
 	post := Post{}
 	db.Preload("User").Preload("Comments.User").Preload("Categories").Find(&post, id)
 	return post
 }
 
 func SearchPost(param Search) []Post {
-	db := DB()
 	posts := []Post{}
 	db.Preload("User").Preload("Comments.User").Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
 	return posts
 }
 
 func UsersPost(id int) []Post {
-	db := DB()
 	posts := []Post{}
 	db.Preload("User").Preload("Comments.User").Order("created desc").Where(Post{UserId: id}).Find(&posts)
 	return posts
 }
 
 func CreatePost(params Post) (res Post, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		log.Printf("data : %v", err)
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Create(&params).Related(&params.Categories, "Categories").Error; err != nil {
 		return res, err
 	}
@@ -74,13 +67,11 @@ func CreatePost(params Post) (res Post, err error) {
 }
 
 func SavePost(params Post) (res Post, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		log.Printf("data : %v", err)
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Save(&params).Related(&params.Categories, "Categories").Error; err != nil {
 		return res, err
 	}

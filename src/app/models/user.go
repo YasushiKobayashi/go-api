@@ -7,7 +7,6 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type (
@@ -46,7 +45,6 @@ func (UserJson) TableName() string {
 }
 
 func CreateUser(param User) (res Token, err error) {
-	db := DB()
 	user := param
 	if err := db.Create(&user).Error; err != nil {
 		log.Printf("data : %v", err)
@@ -64,7 +62,6 @@ func CreateUser(param User) (res Token, err error) {
 }
 
 func Login(param User) (res Token, err error) {
-	db := DB()
 	user := param
 	db.Where(&user).First(&user)
 
@@ -95,7 +92,6 @@ func createToken(id int) (res string, err error) {
 }
 
 func SaveUser(params User) (res User, err error) {
-	validate := validator.New()
 	if err = validate.Struct(params); err != nil {
 		log.Printf("data : %v", err)
 		return res, err
@@ -109,7 +105,6 @@ func SaveUser(params User) (res User, err error) {
 }
 
 func FindUser(id int) UserJson {
-	db := DB()
 	user := UserJson{}
 	db.First(&user, id)
 	return user
