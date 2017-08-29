@@ -3,8 +3,6 @@ package models
 import (
 	"log"
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type (
@@ -21,31 +19,33 @@ type (
 		Updated    time.Time  `json:"updated" sql:"DEFAULT:current_timestamp"`
 	}
 
-	Search struct {
-		Word string `json:"word" validate:"required"`
-	}
-
 	Upload struct {
 		Path string `json:"path"`
 	}
 )
 
-func FindAllPost() []Post {
+func SearchPost(pages int, search string) []Post {
 	posts := []Post{}
-	db.Preload("User").Preload("Comments.User").Order("created desc").Find(&posts)
+	db.Limit(20).Offset(pages).Preload("User").Preload("Comments").
+		Where("content LIKE ?", "%"+search+"%").
+		Or("title LIKE ?", "%"+search+"%").
+		Order("created desc").Find(&posts)
 	return posts
+}
+
+func CountPost(search string) (res Count) {
+	var count int
+	db.Model(&Post{}).
+		Where("content LIKE ?", "%"+search+"%").Or("title LIKE ?", "%"+search+"%").
+		Count(&count)
+	res.Count = count
+	return res
 }
 
 func FindPost(id int) Post {
 	post := Post{}
 	db.Preload("User").Preload("Comments.User").Preload("Categories").Find(&post, id)
 	return post
-}
-
-func SearchPost(param Search) []Post {
-	posts := []Post{}
-	db.Preload("User").Preload("Comments.User").Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
-	return posts
 }
 
 func UsersPost(id int) []Post {

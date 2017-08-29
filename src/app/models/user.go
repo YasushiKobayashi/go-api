@@ -2,11 +2,11 @@ package models
 
 import (
 	"app/config"
+	"fmt"
 	"log"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type (
@@ -22,12 +22,12 @@ type (
 	}
 
 	UserJson struct {
-		Id      int       `json:"id"`
-		Name    string    `json:"name"`
-		Email   *string   `json:"email"`
-		Image   *string   `json:"image"`
-		Created time.Time `json:"created"`
-		Updated time.Time `json:"updated"`
+		Id      int        `json:"id"`
+		Name    string     `json:"name"`
+		Email   NullString `db:"email" json:"email" gorm:"unique_index" validate:"email"`
+		Image   NullString `db:"image" json:"image"`
+		Created time.Time  `json:"created"`
+		Updated time.Time  `json:"updated"`
 	}
 
 	JwtCustomClaims struct {
@@ -48,6 +48,7 @@ func CreateUser(param User) (res Token, err error) {
 	user := param
 	if err := db.Create(&user).Error; err != nil {
 		log.Printf("data : %v", err)
+		fmt.Println(err)
 		return res, err
 	}
 
@@ -97,7 +98,6 @@ func SaveUser(params User) (res User, err error) {
 		return res, err
 	}
 
-	db := DB()
 	if err := db.Save(&params).Error; err != nil {
 		return res, err
 	}

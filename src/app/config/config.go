@@ -22,7 +22,7 @@ var SLACK_FACEICON = conf.SLACK_FACEICON
 var SLACK_CNANNEL = conf.SLACK_CNANNEL
 var SLACK_USERNAME = conf.SLACK_USERNAME
 var FRONT_URL = "http://" + conf.FRONT_DOMEIN + "/"
-var ALLOW_ORIGINS = "http://" + conf.FRONT_DOMEIN
+var CORS_DOMEIN = conf.CORS_DOMEIN
 
 // db config
 const DB_TYPE = "mysql"
@@ -48,19 +48,20 @@ type (
 	}
 
 	Config struct {
-		DB_DATABASE      string `toml:"DB_DATABASE"`
-		DB_HOST          string `toml:"DB_HOST"`
-		DB_USER          string `toml:"DB_USER"`
-		DB_PASS          string `toml:"DB_PASS"`
-		HOST             string `toml:"HOST"`
-		URL              string `toml:"URL"`
-		SITE_TITLE       string `toml:"SITE_TITLE"`
-		HASH_SALT        string `toml:"HASH_SALT"`
-		SLACK_WEBHOOKURL string `toml:"SLACK_WEBHOOKURL"`
-		SLACK_FACEICON   string `toml:"SLACK_FACEICON"`
-		SLACK_USERNAME   string `toml:"SLACK_USERNAME"`
-		SLACK_CNANNEL    string `toml:"SLACK_CNANNEL"`
-		FRONT_DOMEIN     string `toml:"FRONT_DOMEIN"`
+		DB_DATABASE      string   `toml:"DB_DATABASE"`
+		DB_HOST          string   `toml:"DB_HOST"`
+		DB_USER          string   `toml:"DB_USER"`
+		DB_PASS          string   `toml:"DB_PASS"`
+		HOST             string   `toml:"HOST"`
+		URL              string   `toml:"URL"`
+		SITE_TITLE       string   `toml:"SITE_TITLE"`
+		HASH_SALT        string   `toml:"HASH_SALT"`
+		SLACK_WEBHOOKURL string   `toml:"SLACK_WEBHOOKURL"`
+		SLACK_FACEICON   string   `toml:"SLACK_FACEICON"`
+		SLACK_USERNAME   string   `toml:"SLACK_USERNAME"`
+		SLACK_CNANNEL    string   `toml:"SLACK_CNANNEL"`
+		FRONT_DOMEIN     string   `toml:"FRONT_DOMEIN"`
+		CORS_DOMEIN      []string `toml:"CORS_DOMEIN"`
 	}
 )
 

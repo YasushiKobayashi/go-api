@@ -16,7 +16,27 @@ import (
 
 func List() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		data := models.FindAllPost()
+		query := c.QueryParam("q")
+		pages := c.QueryParam("pages")
+		if pages == "" {
+			pages = "1"
+		}
+
+		var number int
+		number, _ = strconv.Atoi(pages)
+		data := models.SearchPost((int(number)-1)*20, query)
+
+		if size := len(data); size == 0 {
+			return c.JSON(http.StatusNotFound, config.NotFound)
+		}
+		return c.JSON(http.StatusOK, data)
+	}
+}
+
+func Count() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		query := c.QueryParam("q")
+		data := models.CountPost(query)
 		return c.JSON(http.StatusOK, data)
 	}
 }
@@ -35,35 +55,6 @@ func Get() echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
 		return c.JSON(http.StatusOK, data)
-	}
-}
-
-func Search() echo.HandlerFunc {
-	return func(c echo.Context) (err error) {
-		params := new(models.Search)
-		if err = c.Bind(params); err != nil {
-			log.Printf("data : %v", err)
-			return c.JSON(http.StatusNotAcceptable, config.NotAcceptable)
-		}
-
-		search := models.Search{
-			Word: params.Word,
-		}
-		data := models.SearchPost(search)
-		return c.JSON(http.StatusOK, data)
-	}
-}
-
-func GetFromCategory() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("category_id"))
-		if err != nil {
-			log.Printf("data : %v", err)
-			return c.JSON(http.StatusBadRequest, err.Error())
-		}
-
-		data := models.FindAllPostFromCategory(int(id))
-		return c.JSON(http.StatusOK, data.Posts)
 	}
 }
 

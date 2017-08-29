@@ -3,8 +3,6 @@ package models
 import (
 	"log"
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type (

@@ -21,7 +21,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Static("/static", "static")
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{config.ALLOW_ORIGINS},
+		AllowOrigins: config.CORS_DOMEIN,
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 
@@ -51,16 +51,17 @@ func main() {
 	r.POST("post", post.Create())
 	r.GET("post/:id", post.Get())
 	r.PUT("post/:id", post.Update())
-	r.POST("post/search", post.Search())
+	r.GET("post/count", post.Count())
 	r.GET("post/user", post.GetFromUser())
-	r.GET("post/category/:category_id", post.GetFromCategory())
 	r.POST("post/upload", post.Upload())
 
 	r.POST("comment", comment.Create())
 	r.PUT("comment/:id", comment.Update())
 
-	r.GET("category", category.List())
-	r.POST("category", category.Create())
+	r.POST("categories", category.Create())
+	r.GET("categories", category.List())
+	r.GET("categories/:category_id/posts", category.GetWithPostList())
+	r.GET("categories/:category_id/count-posts", category.CountPost())
 
 	log.Fatal(e.Start(config.HOST + config.PORT))
 }

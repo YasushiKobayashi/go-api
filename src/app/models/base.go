@@ -44,9 +44,13 @@ type (
 	NullString struct {
 		sql.NullString
 	}
+
+	Count struct {
+		Count int `json:"count"`
+	}
 )
 
-func (s *NullString) MarshalJSON() ([]byte, error) {
+func (s NullString) MarshalJSON() ([]byte, error) {
 	if s.Valid {
 		return json.Marshal(s.String)
 	} else {
