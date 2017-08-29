@@ -48,12 +48,6 @@ func FindPost(id int) Post {
 	return post
 }
 
-func SearchPost(param Search) []Post {
-	posts := []Post{}
-	db.Preload("User").Preload("Comments.User").Order("created desc").Where("content LIKE ?", "%"+param.Word+"%").Or("title LIKE ?", "%"+param.Word+"%").Find(&posts)
-	return posts
-}
-
 func UsersPost(id int) []Post {
 	posts := []Post{}
 	db.Preload("User").Preload("Comments.User").Order("created desc").Where(Post{UserId: id}).Find(&posts)
