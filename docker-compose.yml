@@ -1,10 +1,16 @@
-app:
-  container_name: document-api
-  build: .
-  ports:
-    - "5000:5000"
-  tty: true
-  volumes:
-    - "./src/app/log:/go/src/app/log"
-    - "./src/app/static:/go/src/app/static"
-  command: /go/src/app/main &
+version: '2'
+services:
+  app:
+    container_name: document-api
+    build: .
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    environment:
+      DOCUMENT_ENV: production
+    volumes:
+      - "./src/app/log:/go/src/app/log"
+      - "./src/app/static:/go/src/app/static"
+    working_dir: /go/src/app
+    command: ./main &

@@ -19,6 +19,7 @@ echo 'eval "$(direnv hook bash)"' >> ~/.bash_profile
 
 ### setup project
 ```bash
+echo 'export DOCUMENT_ENV=develop' >> ~/.bash_profile
 cd src/document
 glide install
 ```
