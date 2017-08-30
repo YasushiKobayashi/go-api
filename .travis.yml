@@ -5,7 +5,6 @@ services:
 before_script:
   - echo 'Canada/Pacific' | sudo tee /etc/timezone
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
-  - docker pull golang:1.8
 
 script:
   - mv src/app/config/sample.tml src/app/config/config.tml

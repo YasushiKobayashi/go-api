@@ -77,11 +77,11 @@ func main() Config {
 	res := Config{}
 	osEnv := os.Getenv("DOCUMENT_ENV")
 	if osEnv == "production" {
-		res = env.Develop
+		res = env.Production
 	} else if osEnv == "test" {
 		res = env.Test
 	} else {
-		res = env.Production
+		res = env.Develop
 	}
 	return res
 }
