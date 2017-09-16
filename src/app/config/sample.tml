@@ -36,7 +36,7 @@ CORS_DOMEIN = ["http://localhost:7000", "http://localhost:3000"]
 
 [test]
 DB_DATABASE = "circle_default"
-DB_HOST = "localhost"
+DB_HOST = "127.0.0.1"
 DB_USER = "ubuntu"
 DB_PASS = ""
 
