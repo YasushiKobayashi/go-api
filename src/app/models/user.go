@@ -1,8 +1,6 @@
 package models
 
 import (
-	"app/config"
-	"fmt"
 	"log"
 	"time"
 
@@ -48,7 +46,6 @@ func CreateUser(param User) (res Token, err error) {
 	user := param
 	if err := db.Create(&user).Error; err != nil {
 		log.Printf("data : %v", err)
-		fmt.Println(err)
 		return res, err
 	}
 
@@ -81,10 +78,11 @@ func Login(param User) (res Token, err error) {
 }
 
 func createToken(id int) (res string, err error) {
+	var JWT_EXP = time.Now().Add(time.Hour * 168).Unix()
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["id"] = id
-	claims["exp"] = config.JWT_EXP
+	claims["exp"] = JWT_EXP
 	res, err = token.SignedString([]byte("secret"))
 	if err != nil {
 		return res, err
