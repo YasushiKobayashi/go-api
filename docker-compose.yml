@@ -9,8 +9,22 @@ services:
       - "5000:5000"
     environment:
       DOCUMENT_ENV: production
+    links:
+      - db
+    depends_on:
+      - db
     volumes:
       - "./src/app/log:/go/src/app/log"
       - "./src/app/static:/go/src/app/static"
     working_dir: /go/src/app
     command: ./main &
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    hostname: db
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: "document"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
