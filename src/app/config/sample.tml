@@ -1,6 +1,6 @@
 [production]
 DB_DATABASE = "document"
-DB_HOST = "localhost"
+DB_HOST = "db"
 DB_PASS = ""
 DB_USER = "root"
 
